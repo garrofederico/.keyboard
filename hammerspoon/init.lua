@@ -1,34 +1,26 @@
-local log = hs.logger.new('init.lua', 'debug')
+-- Specify your combination (your hyperkey)
+local hyper = { "cmd", "alt", "ctrl", "shift" }
+-- We use 0 to reload the configuration
+hs.hotkey.bind(hyper, "0", function()
+  hs.reload()
+end)
+-- Notify about the config reload
+hs.notify.new({title="Hammerspoon", informativeText="Config loaded"}):send()
 
-keyUpDown = function(modifiers, key)
-  -- Un-comment & reload config to log each keystroke that we're triggering
-  -- log.d('Sending keystroke:', hs.inspect(modifiers), key)
+-- these are only my favourite apps, you can replace it with yours
+local applicationHotkeys = {
+  o = 'Google Chrome',
+  i = 'iTerm',
+  u = 'Notion',
+  p = 'Pycharm'
+--  s = 'Slack',
+--  e = 'IntelliJ IDEA',
+--  q = 'WebStorm',
+--  j = 'Music',
 
-  hs.eventtap.keyStroke(modifiers, key, 0)
-end
-
--- Subscribe to the necessary events on the given window filter such that the
--- given hotkey is enabled for windows that match the window filter and disabled
--- for windows that don't match the window filter.
---
--- windowFilter - An hs.window.filter object describing the windows for which
---                the hotkey should be enabled.
--- hotkey       - The hs.hotkey object to enable/disable.
---
--- Returns nothing.
-enableHotkeyForWindowsMatchingFilter = function(windowFilter, hotkey)
-  windowFilter:subscribe(hs.window.filter.windowFocused, function()
-    hotkey:enable()
+}
+for key, app in pairs(applicationHotkeys) do
+  hs.hotkey.bind(hyper, key, function()
+    hs.application.launchOrFocus(app)
   end)
-
-  windowFilter:subscribe(hs.window.filter.windowUnfocused, function()
-    hotkey:disable()
-  end)
 end
-
-hs.ipc.cliInstall()
-
-require('keyboard.main')
-require('hs.ipc')
-
-hs.notify.new({title='Hammerspoon', informativeText='Ready to rock!! 🤘'}):send()
