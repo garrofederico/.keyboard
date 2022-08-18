@@ -24,3 +24,22 @@ for key, app in pairs(applicationHotkeys) do
     hs.application.launchOrFocus(app)
   end)
 end
+
+
+-- function to switch to previous window in focus
+local previousWindow = hs.window.focusedWindow()
+local currentWindow = hs.window.focusedWindow()
+hs.window.filter.default:subscribe(hs.window.filter.windowFocused, function()
+    if previousWindow ~= currentWindow then
+        previousWindow = currentWindow
+    end
+    currentWindow = hs.window.focusedWindow()
+    end)
+
+
+-- key to switch to previous window in focus
+hs.hotkey.bind(hyper, "h", function()
+  previousWindow:focus()
+end)
+
+
