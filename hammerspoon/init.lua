@@ -12,7 +12,8 @@ local applicationHotkeys = {
   o = 'Google Chrome',
   i = 'iTerm',
   u = 'Notion',
-  p = 'Pycharm'
+  p = 'Pycharm',
+  y = 'Finder'
 --  s = 'Slack',
 --  e = 'IntelliJ IDEA',
 --  q = 'WebStorm',
@@ -43,3 +44,15 @@ hs.hotkey.bind(hyper, "h", function()
 end)
 
 
+
+
+-- just a test, to check if this is useful
+-- function to switch to previous window
+hs.hotkey.bind(hyper, "left", function()
+    hs.window.focusedWindow():focusWindowWest()
+end)
+
+-- function to switch to previous focused window
+hs.hotkey.bind(hyper, "right", function()
+    hs.window.focusedWindow():focusWindowEast()
+end)
